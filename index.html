@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Vue JS</title>
+</head>
+<body>
+    <div id="element">{{message}}</div>
+    <div id="tab">
+        <ul>
+            <p>{{titreCoutProd}}</p>
+            <li>
+                Asus PX34 : {{coutProdOne}}
+            </li>
+            <li>
+                Lenovo 17X : {{coutProdTwo}}
+            </li>
+            <li>
+                HP Notebook N20 : {{coutProdThree}}
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        console.log(Vue);
+        const element = new Vue({
+            el: '#element',
+            data: {
+                message: 'Ceci est le premier élément en Vue JS'
+            }
+        })
+        const tableauDonnees = new Vue({
+            el: '#tab',
+            data: {
+                titreCoutProd: 'Cout de production de nos produits',
+                coutProdOne: 7.3,
+                coutProdTwo: 5.9,
+                coutProdThree: 11.2
+            }
+        })
+    </script>
+</body>
+</html>
