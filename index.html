@@ -7,39 +7,92 @@
     <title>Test de Vue JS</title>
 </head>
 <body>
-    <div id="element">{{message}}</div>
+    <h1 id='mainTitle'>{{mainTitleText}}</h1>
+    
+    <div v-show="showModal" id="element">{{message}}</div>
+    
     <div id="tab">
+        <h2>{{titreCoutProd}}</h2>
         <ul>
-            <p>{{titreCoutProd}}</p>
-            <li>
-                Asus PX34 : {{coutProdOne}}
+            <li v-for="item in coutProd">
+                <strong>{{item.name}}</strong> : {{item.cout}} € (voir <a v-bind:href=item.url>site web de la marque</a>)
             </li>
             <li>
-                Lenovo 17X : {{coutProdTwo}}
-            </li>
-            <li>
-                HP Notebook N20 : {{coutProdThree}}
+                Coût total TTC : 22 €
             </li>
         </ul>
     </div>
+
+    <hr>
+
+    <div id="vueEvent">
+        <h2>{{titleEvent}}</h2>
+        <button v-on:click="testEvent()">Un événement au clic</button>
+    </div>
+
+    <hr>
+    <div id="footer">
+        {{copyRightText}}
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script>
         console.log(Vue);
+
+        const titleText = new Vue ({
+            el: '#mainTitle',
+            data: {
+                mainTitleText: 'Site Web avec Vue.JS'
+            }
+        })
+
         const element = new Vue({
             el: '#element',
             data: {
-                message: 'Ceci est le premier élément en Vue JS'
+                message: 'Ceci est le premier élément en Vue JS',
+                showModal: true
             }
         })
+
         const tableauDonnees = new Vue({
             el: '#tab',
             data: {
-                titreCoutProd: 'Cout de production de nos produits',
-                coutProdOne: 7.3,
-                coutProdTwo: 5.9,
-                coutProdThree: 11.2
+                titreCoutProd: 'Coût de production de nos produits',
+                coutProd: [
+                    {name: 'Asus PX34', cout: 7.3, url: 'https://www.asus.com/fr/'},
+                    {name: 'Lenovo 17X', cout: 5.9, url: 'https://www.lenovo.com/fr/fr/'},
+                    {name: 'HP Notebook N20', cout: 11.3, url: 'https://www.hp.com/fr-fr/home.html'}
+                ]
+            },
+            computed: {
+                totalCoutProd() {
+                    return (1.2 * (this.coutProd.cout)).toPrecision(4)
+                }
             }
         })
+
+        const copyRight = new Vue({
+            el: '#footer',
+            data: {
+                copyRightText: 'Aucune copie n\'est autorisée'
+            }
+        })
+
+        const vueEvent = new Vue({
+            el: '#vueEvent',
+            data: {
+                titleEvent: 'Ecouter les événements sur Vue avec v-on (ou abr. @)'
+            },
+            methods: {
+                testEvent() {
+                    console.log('Un simple événement')
+                    this.color = 'turquoise'
+                    this.bazckground = 'lightblue'
+                    console.log(this.color)
+                }
+            }
+        })
+
     </script>
 </body>
 </html>
