@@ -4,95 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test de Vue JS</title>
-</head>
-<body>
-    <h1 id='mainTitle'>{{mainTitleText}}</h1>
-    
-    <div v-show="showModal" id="element">{{message}}</div>
-    
-    <div id="tab">
-        <h2>{{titreCoutProd}}</h2>
-        <ul>
-            <li v-for="item in coutProd">
-                <strong>{{item.name}}</strong> : {{item.cout}} € (voir <a v-bind:href=item.url>site web de la marque</a>)
-            </li>
-            <li>
-                Coût total TTC : 22 €
-            </li>
-        </ul>
-    </div>
-
-    <hr>
-
-    <div id="vueEvent">
-        <h2>{{titleEvent}}</h2>
-        <button v-on:click="testEvent()">Un événement au clic</button>
-    </div>
-
-    <hr>
-    <div id="footer">
-        {{copyRightText}}
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Interface de commande en ligne</title>
+</head>
+<body class="bg-dark">
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="jumbotron col-md-6 shadow-lg">
+                    Login : <input class="bg-secondary text-white rounded" type="text" v-model="user"/><br/><br/>
+                    Vous êtes connecté en tant que {{ user }}
+                </div>
+            </div>
+            <h1 v-bind:class="affichage">Produits disponibles </h1>
+            <div class="row">
+                <div class="col-3 shadow-lg" v-for="item in produits">
+                    <p class="jumbotron text-center bg-secondary border border-primary shadow-lg">
+                        <span class="h3 text-white font-weight-bold"> {{ item }}</span><br><br>
+                        <button @click="commander(item, date)" class="text-white btn btn-success btn-lg">Commander</button>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <h1 class="display-4 text-white" v-if="commandes.length > 0">Produits commandés</h1>
+            <div class="row">
+                <div class="col-6">
+                    <div class="jumbotron bg-secondary" v-if="commandes.length > 0">
+                        <ul>
+                            <li class="text-white" v-for="commande in commandes">{{ commande }} - <span class="text-info" v-for="dateCommande in dateCommandes"> {{ dateCommande }} </span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        console.log(Vue);
-
-        const titleText = new Vue ({
-            el: '#mainTitle',
+        Vue.component('fiche-produit')
+        let app = new Vue({
+            el: '#app',
             data: {
-                mainTitleText: 'Site Web avec Vue.JS'
-            }
-        })
-
-        const element = new Vue({
-            el: '#element',
-            data: {
-                message: 'Ceci est le premier élément en Vue JS',
-                showModal: true
-            }
-        })
-
-        const tableauDonnees = new Vue({
-            el: '#tab',
-            data: {
-                titreCoutProd: 'Coût de production de nos produits',
-                coutProd: [
-                    {name: 'Asus PX34', cout: 7.3, url: 'https://www.asus.com/fr/'},
-                    {name: 'Lenovo 17X', cout: 5.9, url: 'https://www.lenovo.com/fr/fr/'},
-                    {name: 'HP Notebook N20', cout: 11.3, url: 'https://www.hp.com/fr-fr/home.html'}
-                ]
-            },
-            computed: {
-                totalCoutProd() {
-                    return (1.2 * (this.coutProd.cout)).toPrecision(4)
-                }
-            }
-        })
-
-        const copyRight = new Vue({
-            el: '#footer',
-            data: {
-                copyRightText: 'Aucune copie n\'est autorisée'
-            }
-        })
-
-        const vueEvent = new Vue({
-            el: '#vueEvent',
-            data: {
-                titleEvent: 'Ecouter les événements sur Vue avec v-on (ou abr. @)'
+                user: 'Mike',
+                produits: ["Pizza", "Tacos", "Doner kebab", "Couscous"],
+                commandes: [],
+                dateCommandes: [],
+                affichage: 'display-4 text-white'
             },
             methods: {
-                testEvent() {
-                    console.log('Un simple événement')
-                    this.color = 'turquoise'
-                    this.bazckground = 'lightblue'
-                    console.log(this.color)
+                commander: function(item, date) {
+                    this.commandes.push(item);
+                    console.log(app.commandes);
+                    date = new Date();
+                    dateDelivered = date.toLocaleTimeString();
+                    console.log(dateDelivered);
+                    this.dateCommandes.push(dateDelivered);
+                    console.log(app.dateCommandes)
                 }
             }
-        })
 
+        })
     </script>
+    
 </body>
 </html>
