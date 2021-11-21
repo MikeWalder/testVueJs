@@ -22,15 +22,7 @@
             <h1 v-bind:class="affichage">Produits disponibles </h1>
 
             <div class="row">
-
-                <fiche-produit v-for="produit in produits" v-bind:nom="produit" v-on:commande-passee="commander"></fiche-produit>
-
-                <div class="col-3 shadow-lg" v-for="item in produits">
-                    <p class="jumbotron text-center bg-secondary border border-primary shadow-lg">
-                        <span class="h3 text-white font-weight-bold"> {{ item }}</span><br><br>
-                        <button @click="commander(item)" @click="dateDeCommande()" class="text-white btn btn-success btn-lg">Commander</button>
-                    </p>
-                </div>
+                <fiche-produit v-for="produit in produits" v-for="delivery in dateCommandes" v-bind:nom="produit" v-bind:date_courante="delivery" v-on:commande-passee="commander" v-on:date-commande="dateDeCommande"></fiche-produit>
             </div>
 
             <hr>
@@ -42,8 +34,8 @@
                 <div class="col-6">
                     <div class="jumbotron bg-secondary border border-success" v-if="commandes.length > 0">
                         <ul>
-                            <li class="text-white font-weight-bold" v-for="commande in commandes">{{ commande }} - 
-                                <span class="text-warning font-weight-light" v-for="dateCommande in dateCommandes"> {{ dateCommande }} </span>
+                            <li class="text-white font-weight-bold h3" v-for="commande in commandes">{{ commande }} - 
+                                <span class="text-warning font-weight-light" v-for="delivery in dateCommandes"> {{ delivery }} </span>
                             </li>
                         </ul>
                     </div>
@@ -58,15 +50,16 @@
             template: `
             <div class="col-3 shadow-lg">
                 <p class="jumbotron text-center bg-secondary border border-primary shadow-lg">
-                    <span class="h3 text-white font-weight-bold"> {{ nom }}</span><br><br>
-                    <button @click="passation_produit(nom)" class="text-white btn btn-success btn-lg">Commander</button>
+                    <span class="h3 text-white font-weight-bold"> {{ nom }} </span><br><br>
+                    <button @click="passation_produit(nom, date_courante)" class="text-white btn btn-success btn-lg">Commander</button>
                 </p>
             </div>
             `,
             props: ['nom'],
             methods: {
-                passation_produit: function(produit) { // fonction 
-                    this.$emit('commande-passee', produit)
+                passation_produit: function(produit, date_courante) { // fonction 
+                    this.$emit('commande-passee', produit);
+                    this.$emit('date-commande', date_courante);
                 }
             }
         })
@@ -75,20 +68,22 @@
             el: '#app',
             data: {
                 user: 'Mike',
+                date_courante: new Date().toLocaleTimeString(),
                 produits: ["Pizza", "Tacos", "Doner kebab", "Couscous"],
                 commandes: [],
                 dateCommandes: [],
                 affichage: 'display-4 text-white'
             },
             methods: {
-                commander: function(item, date) {
+                commander: function(item) {
                     this.commandes.push(item);
                 },
-                dateDeCommande: function() {
-                    timeCommande = new Date().toLocaleTimeString();
-                    console.log(timeCommande);
-                    this.dateCommandes.push(timeCommande);
+                dateDeCommande: function(delivery) {
+                    delivery = new Date().toLocaleTimeString();
+                    console.log(delivery);
+                    this.dateCommandes.push(delivery);
                     console.log(app.dateCommandes);
+                    delivery = '';
                 }
             }
         })
