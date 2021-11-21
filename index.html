@@ -11,37 +11,66 @@
 <body class="bg-dark">
     <div id="app">
         <div class="container">
+
             <div class="row">
                 <div class="jumbotron col-md-6 shadow-lg">
                     Login : <input class="bg-secondary text-white rounded" type="text" v-model="user"/><br/><br/>
                     Vous êtes connecté en tant que {{ user }}
                 </div>
             </div>
+
             <h1 v-bind:class="affichage">Produits disponibles </h1>
+
             <div class="row">
+
+                <fiche-produit v-for="produit in produits" v-bind:nom="produit" v-on:commande-passee="commander"></fiche-produit>
+
                 <div class="col-3 shadow-lg" v-for="item in produits">
                     <p class="jumbotron text-center bg-secondary border border-primary shadow-lg">
                         <span class="h3 text-white font-weight-bold"> {{ item }}</span><br><br>
-                        <button @click="commander(item, date)" class="text-white btn btn-success btn-lg">Commander</button>
+                        <button @click="commander(item)" @click="dateDeCommande()" class="text-white btn btn-success btn-lg">Commander</button>
                     </p>
                 </div>
             </div>
+
             <hr>
-            <h1 class="display-4 text-white" v-if="commandes.length > 0">Produits commandés</h1>
+
+            <h1 class="display-4 text-white text-center" v-if="commandes.length > 0">Produits commandés</h1>
+
             <div class="row">
+                <div class="col-3"></div>
                 <div class="col-6">
-                    <div class="jumbotron bg-secondary" v-if="commandes.length > 0">
+                    <div class="jumbotron bg-secondary border border-success" v-if="commandes.length > 0">
                         <ul>
-                            <li class="text-white" v-for="commande in commandes">{{ commande }} - <span class="text-info" v-for="dateCommande in dateCommandes"> {{ dateCommande }} </span></li>
+                            <li class="text-white font-weight-bold" v-for="commande in commandes">{{ commande }} - 
+                                <span class="text-warning font-weight-light" v-for="dateCommande in dateCommandes"> {{ dateCommande }} </span>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
-        Vue.component('fiche-produit')
+        Vue.component('fiche-produit', { // Création de notre composant fiche-produit
+            template: `
+            <div class="col-3 shadow-lg">
+                <p class="jumbotron text-center bg-secondary border border-primary shadow-lg">
+                    <span class="h3 text-white font-weight-bold"> {{ nom }}</span><br><br>
+                    <button @click="passation_produit(nom)" class="text-white btn btn-success btn-lg">Commander</button>
+                </p>
+            </div>
+            `,
+            props: ['nom'],
+            methods: {
+                passation_produit: function(produit) { // fonction 
+                    this.$emit('commande-passee', produit)
+                }
+            }
+        })
+
         let app = new Vue({
             el: '#app',
             data: {
@@ -54,15 +83,14 @@
             methods: {
                 commander: function(item, date) {
                     this.commandes.push(item);
-                    console.log(app.commandes);
-                    date = new Date();
-                    dateDelivered = date.toLocaleTimeString();
-                    console.log(dateDelivered);
-                    this.dateCommandes.push(dateDelivered);
-                    console.log(app.dateCommandes)
+                },
+                dateDeCommande: function() {
+                    timeCommande = new Date().toLocaleTimeString();
+                    console.log(timeCommande);
+                    this.dateCommandes.push(timeCommande);
+                    console.log(app.dateCommandes);
                 }
             }
-
         })
     </script>
     
