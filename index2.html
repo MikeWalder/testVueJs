@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Autres tests de base de Vue JS</title>
+</head>
+<body class="bg-light">
+    <div id="app">
+        <nav class="navbar">
+            <!-- Navbar content -->
+            <h1 class="mx-auto text-center">{{ mainTitle }}</h1>
+        </nav>
+        <hr class="bg-dark separation" height="30">
+
+        <section v-if="number < 18 && number >= 0" :class="[green, upperCase]">
+            Vous êtes mineur et la valeur de number est égale à {{ number }}<br>
+            {{number}}€ valent {{ eurosToFrancs }}F.
+        </section>
+
+        <section v-else-if="number >= 18" :class="[orange, upperCase]">
+            Vous êtes majeur et la valeur de number est égale à {{ number }}<br>
+            {{number}}€ valent {{ eurosToFrancs }}F.
+        </section>
+
+        <section v-else="number < 0" :class="[blue, upperCase]">
+            Vous ne pouvez pas avoir un âge négatif !
+        </section>
+
+        <div class="container">
+            <div class="row">
+                <div class="border border-success col-4 card" v-for="item in produitMag">
+                    <img class="card-img-top" v-bind:src="item.urlImg" alt="Card image cap">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">{{item.nom}}</h5>
+                      <p class="card-text">{{item.desc}}</p>
+                      <div class="mx-auto">
+                        <a href="#" class="btn btn-primary btn-lg">{{item.prix}}€   T.T.C.</a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="text-center">
+            <button class="btn btn-info shadow  btn-lg" v-on:click="changeColor()">Ecouteur d'événement</button>
+        </div>
+
+        <br>
+        
+        <form>
+            <label for="username">Nom d'utilisateur</label>
+            <input id="username" type="text" v-model="username" />
+            <label for="pw">Mot de passe</label>
+            <input id="pw" type="password" v-model="password" />
+        </form>
+        <p v-if="username != '' && password != ''">Votre username est <span :class="[green]">{{username}}</span> et vtre password est <span :class="[blue]">{{password}}</span></p>
+
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                mainTitle: 'Test de Vue JS',
+                number: 45,
+                produitMag: [
+                    { nom: 'Produit A', prix: 32, desc: 'Notre produit phare', urlImg: 'img/logo1.png' },
+                    { nom: 'Produit B', prix: 23, desc: 'Le meilleur en terme de qualité / prix', urlImg: 'img/logo2.png' },
+                    { nom: 'Produit C', prix: 25.50, desc: 'Notre entrée de gamme', urlImg: './img/logo3.png' }
+
+                ],
+                green: 'green',
+                orange: 'orange',
+                blue: 'blue',
+                upperCase: 'upperCase',
+
+                username: '',
+                password: ''
+            },
+            computed: {
+                eurosToFrancs() {
+                    return Math.ceil(this.number * 6.66957)
+                }
+            },
+            methods: {
+                changeColor() {
+                    const color = 'rouge'
+                    console.log('Evénement au clic du bouton : couleur ' + color)
+                }
+            }
+
+        })
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #FFF;
+            font-weight: bold;
+        }
+        nav {
+            background: linear-gradient(to right, #ff8a00 0%, #dd4c4f 100%);
+            margin: 0;
+            padding: 0;
+        }
+        hr {
+            height: 7px;
+            color: #000;
+            background: linear-gradient(to bottom, #fff 0%, #111 100%);
+            margin: 0;
+        }
+        section {
+            width: 100vw;
+            height: 15vh;
+            background-color: lightblue;
+            text-align: center;
+            font-weight: bold;
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 18px;
+        }
+        .green {
+            color: green;
+        }
+        .orange {
+            color: orange;
+        }
+        .blue {
+            color: blue;
+        }
+        .upperCase {
+            text-transform: uppercase;
+        }
+    </style>
+</body>
+</html>
