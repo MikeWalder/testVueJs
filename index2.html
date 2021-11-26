@@ -33,6 +33,8 @@
         <div class="container">
             <div class="row">
                 <div class="border border-success col-4 card" v-for="item in produitMag">
+                    <div class="p-3 bg-success text-white font-weight-bold text-center border" v-if="item.rupture == false"> En stock </div>
+                    <div class="p-3 bg-danger text-white font-white-bold text-center" v-if="item.rupture == true"> En rupture </div>
                     <img class="card-img-top" v-bind:src="item.urlImg" alt="Card image cap">
                     <div class="card-body text-center">
                       <h5 class="card-title">{{item.nom}}</h5>
@@ -59,7 +61,10 @@
             <label for="pw">Mot de passe</label>
             <input id="pw" type="password" v-model="password" />
         </form>
-        <p v-if="username != '' && password != ''">Votre username est <span :class="[green]">{{username}}</span> et vtre password est <span :class="[blue]">{{password}}</span></p>
+        <p v-if="username != 'unknown' && username != '' && password != ''">Votre username est 
+            <span :class="[green]">{{username}}</span> et votre password est 
+            <span :class="[blue]">{{password}}</span>
+        </p>
 
     </div>
 
@@ -70,17 +75,16 @@
                 mainTitle: 'Test de Vue JS',
                 number: 45,
                 produitMag: [
-                    { nom: 'Produit A', prix: 32, desc: 'Notre produit phare', urlImg: 'img/logo1.png' },
-                    { nom: 'Produit B', prix: 23, desc: 'Le meilleur en terme de qualité / prix', urlImg: 'img/logo2.png' },
-                    { nom: 'Produit C', prix: 25.50, desc: 'Notre entrée de gamme', urlImg: './img/logo3.png' }
-
+                    { nom: 'Produit A', prix: 32, desc: 'Notre produit phare', urlImg: 'img/logo1.png', rupture: false },
+                    { nom: 'Produit B', prix: 23, desc: 'Le meilleur en terme de qualité / prix', urlImg: 'img/logo2.png', rupture: true },
+                    { nom: 'Produit C', prix: 25.50, desc: 'Notre entrée de gamme', urlImg: './img/logo3.png', rupture: false }
                 ],
                 green: 'green',
                 orange: 'orange',
                 blue: 'blue',
                 upperCase: 'upperCase',
 
-                username: '',
+                username: 'unknown',
                 password: ''
             },
             computed: {
@@ -94,7 +98,6 @@
                     console.log('Evénement au clic du bouton : couleur ' + color)
                 }
             }
-
         })
     </script>
 
@@ -141,6 +144,7 @@
         .upperCase {
             text-transform: uppercase;
         }
+
     </style>
 </body>
 </html>
