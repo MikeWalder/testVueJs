@@ -79,6 +79,8 @@ export default ({
     },
     beforeUpdate() {
         console.log('La mise à jour du composant Produit va être exécutée')
+        this.colorPanier = false
+        console.log(this.colorPanier)
     },
     updated() {
         console.log('Le composant Produit vient d\'être réactualisé !')
@@ -107,11 +109,13 @@ export default ({
     </div>
     
     <br>
+
     <div class="text-center">
         <button type="button" class="btn btn-lg h3" :class="colorPanier ? 'bg-info' : 'bg-success'">
             Panier  &nbsp;<span class="badge badge-light">{{nombreProduits}}</span>
         </button>
     </div>
+
     <br>
 
     <div class="container-fluid">
@@ -133,6 +137,7 @@ export default ({
             </div>
         </div>
     </div>
+
 </template>
 
 <style scoped>
