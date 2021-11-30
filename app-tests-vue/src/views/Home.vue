@@ -16,6 +16,24 @@ export default {
   name: 'Home',
   components: {
     HelloWorld
+  },
+  beforeCreate() {
+      console.log('Le composant Home n\'est pas encore créé !')
+  },
+  created() {
+      console.log('Le composant Home vient d\'être créé !')
+  },
+  beforeMount() {
+      console.log('Le composant Home vient bientôt être monté dans le DOM !')
+  },
+  mounted() {
+      console.log('Le composant Home est monté sur le DOM !')
+  },
+  beforeUnmount() {
+      console.log('Le composant Home est sur le point d\'être retiré du DOM.')
+  },
+  unmounted() {
+      console.log('Le composant Home a été détruit.')
   }
 }
 </script>
